@@ -34,7 +34,7 @@ namespace Pages
             {
                 return m_Driver.FindElement(by);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -51,7 +51,7 @@ namespace Pages
                     m_Driver.FindElement(by);
                     break;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     m_Driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 1);
                 }

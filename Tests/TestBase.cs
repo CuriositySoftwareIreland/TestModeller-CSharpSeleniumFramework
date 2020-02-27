@@ -43,16 +43,22 @@ namespace Tests
 
             foreach (Test curTest in TestExecutionContext.CurrentContext.CurrentTest.Tests)
             {
-                foreach (Test subTest in curTest.Tests)
+                if (curTest.RunState == RunState.Runnable)
                 {
-                    DataAllocation[] allocAttr = subTest.Method.GetCustomAttributes<DataAllocation>(true);
-                    if (allocAttr != null && allocAttr.Length > 0)
+                    foreach (Test subTest in curTest.Tests)
                     {
-                        foreach (String testType in allocAttr[0].groups)
+                        if (subTest.RunState == RunState.Runnable)
                         {
-                            AllocationType allocationType = new AllocationType(allocAttr[0].poolName, allocAttr[0].suiteName, testType);
+                            DataAllocation[] allocAttr = subTest.Method.GetCustomAttributes<DataAllocation>(true);
+                            if (allocAttr != null && allocAttr.Length > 0)
+                            {
+                                foreach (String testType in allocAttr[0].groups)
+                                {
+                                    AllocationType allocationType = new AllocationType(allocAttr[0].poolName, allocAttr[0].suiteName, testType);
 
-                            allocationTypes.Add(allocationType);
+                                    allocationTypes.Add(allocationType);
+                                }
+                            }
                         }
                     }
                 }
@@ -62,7 +68,7 @@ namespace Tests
             {
                 if (!dataAllocationEngine.ResolvePools(ModellerConfig.ServerName, allocationTypes))
                 {
-                    throw new Exception("Error - " + dataAllocationEngine.getErrorMessage());
+                    throw new Exception("Error while allocating data - " + dataAllocationEngine.getErrorMessage());
                 }
             }
         }

@@ -12,6 +12,7 @@ using TestModellerCSharp.Pages.Samples.Splendid;
 namespace Tests
 {
     [TestFixture]
+    [Ignore("Sample test requires correct ConnectionProfile setup")]
     public class SplendidCreateOppertunity_DataAllocation : TestBase
     {
         [Test]
